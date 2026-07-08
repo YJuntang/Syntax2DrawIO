@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
+  "homepage": "https://syntax2drawio.pages.dev",
   "repository": {
     "type": "git",
     "url": "https://github.com/YJuntang/Syntax2DrawIO.git"

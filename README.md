@@ -1,5 +1,7 @@
 # Syntax2DrawIO
 
+[Use the web app](https://syntax2drawio.pages.dev)
+
 Syntax2DrawIO converts Mermaid and PlantUML source into Draw.io files in the web app or Tauri desktop shell. Supported constructs become native editable shapes; partially supported diagrams retain editable content plus a hidden locked visual reference so missing fidelity is never silent.
 
 Native PlantUML families include sequence, class, component, and use case diagrams. The bundled example catalog intentionally exercises complex editable diagrams rather than minimal syntax samples.
@@ -34,7 +36,7 @@ The in-app diagnostics panel lists limitations for the current diagram. A broade
 
 ## Releases
 
-The quality workflow runs lint, typecheck, tests, and build on pushes and pull requests. Cloudflare Pages deployment is manual through `deploy-web` and requires Cloudflare secrets. Tagged `desktop-v*` builds create draft macOS and Windows releases. Initial desktop binaries are unsigned, so Gatekeeper or SmartScreen may warn.
+The web app is hosted on Cloudflare Pages. The quality workflow runs lint, typecheck, tests, and build on pushes and pull requests. Tagged `desktop-v*` builds create draft macOS and Windows releases. Initial desktop binaries are unsigned, so Gatekeeper or SmartScreen may warn.
 
 ## License
 
