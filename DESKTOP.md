@@ -60,6 +60,6 @@ Windows signing is not wired in yet, but the release workflow leaves room for a 
 ## Desktop Behavior Notes
 
 - Mermaid conversion works fully offline.
-- Non-sequence PlantUML visual fallback still uses the public PlantUML renderer, so those previews and visual exports need internet access.
+- PlantUML preview and visual fallback layers use the configured HTTPS PlantUML renderer, so internet is required unless that renderer is local and reachable.
 - Desktop open/save flows use native dialogs.
 - External links are opened through the OS default browser instead of inside the app window.

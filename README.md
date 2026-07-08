@@ -1,6 +1,6 @@
 # Syntax2DrawIO
 
-Syntax2DrawIO converts Mermaid and PlantUML source into Draw.io files. Supported constructs become native editable shapes; partially supported diagrams retain editable content plus a hidden locked visual reference so missing fidelity is never silent.
+Syntax2DrawIO converts Mermaid and PlantUML source into Draw.io files in the web app or Tauri desktop shell. Supported constructs become native editable shapes; partially supported diagrams retain editable content plus a hidden locked visual reference so missing fidelity is never silent.
 
 Native PlantUML families include sequence, class, component, and use case diagrams. The bundled example catalog intentionally exercises complex editable diagrams rather than minimal syntax samples.
 
@@ -15,14 +15,14 @@ npm test -- --run
 npm run lint
 npm run typecheck
 npm run build
-cd src-tauri && cargo check
+cargo check --manifest-path src-tauri/Cargo.toml
 ```
 
 Copy `.env.example` to `.env.local` if the public repository URL differs from the default.
 
 ## PlantUML privacy
 
-Mermaid renders locally. PlantUML preview requires an HTTPS renderer and transmits the diagram source to that renderer only after first-use consent for its exact origin. Consent can be revoked in Settings. See [PRIVACY.md](PRIVACY.md).
+Mermaid renders locally. PlantUML preview and visual fallback layers require an HTTPS renderer and transmit the diagram source to that renderer only after first-use consent for its exact origin. Consent can be revoked in Settings. See [PRIVACY.md](PRIVACY.md).
 
 ## Export fidelity
 
@@ -34,7 +34,7 @@ The in-app diagnostics panel lists limitations for the current diagram. A broade
 
 ## Releases
 
-The web app is deployed to Cloudflare Pages from protected `main`. Tagged `desktop-v*` builds create draft macOS and Windows releases. Initial desktop binaries are unsigned, so Gatekeeper or SmartScreen may warn.
+The quality workflow runs lint, typecheck, tests, and build on pushes and pull requests. Cloudflare Pages deployment is manual through `deploy-web` and requires Cloudflare secrets. Tagged `desktop-v*` builds create draft macOS and Windows releases. Initial desktop binaries are unsigned, so Gatekeeper or SmartScreen may warn.
 
 ## License
 
