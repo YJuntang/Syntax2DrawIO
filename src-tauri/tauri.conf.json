@@ -1,0 +1,65 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
+  "productName": "Syntax2DrawIO",
+  "version": "0.1.0",
+  "identifier": "io.syntax2drawio.desktop",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:3000",
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Syntax2DrawIO",
+        "label": "main",
+        "width": 1440,
+        "height": 920,
+        "minWidth": 1080,
+        "minHeight": 720,
+        "center": true,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": {
+        "default-src": "'self' asset: http://asset.localhost https://asset.localhost",
+        "base-uri": "'self'",
+        "connect-src": "'self' ipc: http://ipc.localhost https://ipc.localhost http://localhost:3000 ws://localhost:3000 http://127.0.0.1:3000 ws://127.0.0.1:3000 https://www.plantuml.com",
+        "font-src": "'self' data: asset: http://asset.localhost https://asset.localhost",
+        "form-action": "'self'",
+        "frame-src": "'none'",
+        "img-src": "'self' data: blob: asset: http://asset.localhost https://asset.localhost https://www.plantuml.com",
+        "object-src": "'none'",
+        "script-src": "'self'",
+        "style-src": "'self' 'unsafe-inline'",
+        "worker-src": "'self' blob:"
+      }
+    }
+  },
+  "bundle": {
+    "active": true,
+    "category": "DeveloperTool",
+    "createUpdaterArtifacts": false,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "macOS": {
+      "minimumSystemVersion": "11.0"
+    },
+    "android": {
+      "debugApplicationIdSuffix": ".debug"
+    },
+    "windows": {
+      "digestAlgorithm": "sha256",
+      "timestampUrl": ""
+    }
+  }
+}

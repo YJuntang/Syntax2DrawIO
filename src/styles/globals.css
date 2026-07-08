@@ -1,0 +1,103 @@
+@import "tailwindcss";
+@variant light (.light &);
+
+@theme {
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  --color-zinc-50: #fafafa;
+  --color-zinc-100: #f4f4f5;
+  --color-zinc-200: #e4e4e7;
+  --color-zinc-300: #d4d4d8;
+  --color-zinc-400: #a1a1aa;
+  --color-zinc-500: #71717a;
+  --color-zinc-600: #52525b;
+  --color-zinc-700: #3f3f46;
+  --color-zinc-800: #27272a;
+  --color-zinc-900: #18181b;
+  --color-zinc-950: #09090b;
+
+  --color-blue-500: #007AFF;
+  --color-blue-600: #0066D6;
+
+  --animate-fade-in: fade-in 0.2s ease-out;
+  --animate-slide-up: slide-up 0.3s ease-out;
+  --animate-scale-in: scale-in 0.2s ease-out;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@layer base {
+  :root {
+    color-scheme: light dark;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+  
+  html.light {
+    color-scheme: light;
+  }
+  
+  body {
+    @apply bg-zinc-950 text-zinc-100 font-sans antialiased selection:bg-blue-500/30 transition-colors duration-300;
+  }
+  
+  html.light body {
+    @apply bg-zinc-50 text-zinc-900;
+  }
+
+  /* Custom scrollbars */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-zinc-700/50 rounded-full hover:bg-zinc-600/50 transition-colors;
+  }
+  
+  html.light ::-webkit-scrollbar-thumb {
+    @apply bg-zinc-300/50 hover:bg-zinc-400/50;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-zinc-900/70 backdrop-blur-md border border-zinc-800/50;
+  }
+  
+  html.light .glass {
+    @apply bg-white/70 backdrop-blur-md border border-zinc-200/50 shadow-sm;
+  }
+
+  .glass-panel {
+    @apply bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/30;
+  }
+
+  html.light .glass-panel {
+    @apply bg-white/50 backdrop-blur-sm border border-zinc-200/30;
+  }
+}

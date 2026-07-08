@@ -1,0 +1,34 @@
+[package]
+name = "syntax2drawio-desktop"
+version = "0.1.0"
+description = "Syntax2DrawIO desktop app"
+authors = ["kal"]
+license = "MIT"
+repository = "https://github.com/syntax2drawio/syntax2drawio"
+edition = "2021"
+rust-version = "1.77.2"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+name = "syntax2drawio_desktop_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2.6.2", features = [] }
+
+[dependencies]
+serde_json = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+log = "0.4"
+tauri = { version = "2.11.2", features = [] }
+tauri-plugin-log = "2"
+tauri-plugin-dialog = "2"
+tauri-plugin-fs = "2"
+tauri-plugin-opener = "2"
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls"] }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+objc2 = "0.6.4"
+objc2-app-kit = { version = "0.3.2", features = ["NSDragging", "NSDraggingItem", "NSDraggingSession", "NSEvent", "NSImage", "NSPasteboard", "NSPasteboardItem", "NSResponder", "NSView", "NSWindow", "NSWorkspace"] }
+objc2-foundation = { version = "0.3.2", features = ["NSArray", "NSGeometry", "NSObject", "NSString", "NSURL"] }

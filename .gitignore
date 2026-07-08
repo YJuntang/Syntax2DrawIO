@@ -1,0 +1,16 @@
+node_modules/
+dist/
+coverage/
+.vite/
+.cache/
+.turbo/
+.hermes/
+src-tauri/target/
+src-tauri/gen/
+*.log
+*.tmp
+.DS_Store
+.env
+.env.*
+!.env.example
+release-checksums/

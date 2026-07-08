@@ -1,0 +1,113 @@
+name: release-desktop
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'desktop-v*'
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test -- --run
+      - run: npm run build
+
+  publish-desktop:
+    needs: quality
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            args: --target universal-apple-darwin --bundles dmg --ci --no-sign
+            rust_targets: aarch64-apple-darwin,x86_64-apple-darwin
+            artifact_glob: src-tauri/target/universal-apple-darwin/release/bundle/dmg/*.dmg
+          - os: windows-latest
+            args: --target x86_64-pc-windows-msvc --bundles msi --ci --no-sign
+            rust_targets: ''
+            artifact_glob: src-tauri/target/x86_64-pc-windows-msvc/release/bundle/msi/*.msi
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.rust_targets }}
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Build and upload desktop release artifacts
+        id: tauri
+        uses: tauri-apps/tauri-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Future macOS signing/notarization secrets:
+          # APPLE_CERTIFICATE
+          # APPLE_CERTIFICATE_PASSWORD
+          # APPLE_SIGNING_IDENTITY
+          # APPLE_ID
+          # APPLE_PASSWORD
+          # APPLE_TEAM_ID
+          #
+          # Future Windows signing can be layered in with an additional
+          # certificate import/signing step before the Tauri bundle upload.
+        with:
+          projectPath: .
+          tagName: desktop-v__VERSION__
+          releaseName: Syntax2DrawIO v__VERSION__
+          releaseBody: |
+            Desktop builds for macOS and Windows.
+
+            Notes:
+            - This first desktop release is intentionally unsigned.
+            - macOS Gatekeeper and Windows SmartScreen may show trust warnings.
+            - PlantUML preview and any visual fallback layers still need internet access.
+          releaseDraft: true
+          prerelease: false
+          args: ${{ matrix.args }}
+
+      - name: Generate SHA-256 checksums
+        shell: bash
+        run: |
+          mkdir -p release-checksums
+          shopt -s nullglob
+          for artifact in ${{ matrix.artifact_glob }}; do
+            shasum -a 256 "$artifact" > "release-checksums/$(basename "$artifact").sha256"
+          done
+
+      - name: Upload checksums to GitHub Release
+        if: success()
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          shopt -s nullglob
+          files=(release-checksums/*)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "No checksum files found"
+            exit 1
+          fi
+
+          gh release upload "desktop-v${{ steps.tauri.outputs.appVersion }}" "${files[@]}" --clobber
