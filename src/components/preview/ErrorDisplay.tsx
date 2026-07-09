@@ -22,12 +22,12 @@ export function ErrorDisplay({ error }: ErrorDisplayProps) {
   };
 
   return (
-    <div role="alert" aria-live="assertive" className="absolute inset-x-4 bottom-4 z-20 flex max-w-xl items-start gap-3 rounded-xl border border-red-500/20 bg-zinc-950/95 p-4 shadow-lg backdrop-blur-md animate-slide-up light:bg-red-50 light:border-red-200">
+    <div role="alert" aria-live="assertive" className="absolute inset-x-3 top-3 z-20 mx-auto flex max-h-[min(22rem,calc(100dvh-9rem))] max-w-xl items-start gap-2 overflow-y-auto rounded-xl border border-red-500/20 bg-zinc-950/95 p-3 shadow-lg backdrop-blur-md animate-slide-up light:bg-red-50 light:border-red-200 sm:inset-x-4 sm:bottom-4 sm:top-auto sm:mx-0 sm:gap-3 sm:p-4">
       <div className="shrink-0">
         {isSyntax ? (
-          <AlertCircle className="h-5 w-5 text-red-500" />
+          <AlertCircle className="h-5 w-5 text-red-500 sm:mt-0" />
         ) : (
-          <AlertTriangle className="h-5 w-5 text-amber-500" />
+          <AlertTriangle className="h-5 w-5 text-amber-500 sm:mt-0" />
         )}
       </div>
       
@@ -53,7 +53,7 @@ export function ErrorDisplay({ error }: ErrorDisplayProps) {
             <button
               type="button"
               onClick={handleAction}
-              className="inline-flex items-center gap-1 rounded bg-amber-500 px-2 py-1 text-xs font-semibold text-zinc-950 shadow-sm hover:bg-amber-400 light:bg-amber-500 light:text-white light:hover:bg-amber-600"
+              className="inline-flex items-center gap-1 rounded bg-amber-500 px-2 py-1 text-xs font-semibold text-zinc-950 shadow-sm hover:bg-amber-400 light:bg-amber-500 light:text-white light:hover:bg-amber-600 max-[420px]:w-full"
             >
               <Check className="h-3 w-3" /> {action.label}
             </button>
@@ -62,7 +62,7 @@ export function ErrorDisplay({ error }: ErrorDisplayProps) {
             <button
               type="button"
               onClick={() => window.dispatchEvent(new CustomEvent('s2d:reveal-line', { detail: { line: parsed.line, column: parsed.column || 1 } }))}
-              className="rounded bg-white/5 px-2 py-1 text-xs font-medium text-blue-300 hover:bg-white/10 light:bg-white light:text-blue-700"
+              className="rounded bg-white/5 px-2 py-1 text-xs font-medium text-blue-300 hover:bg-white/10 light:bg-white light:text-blue-700 max-[420px]:w-full"
             >
               Jump to line
             </button>
@@ -70,7 +70,7 @@ export function ErrorDisplay({ error }: ErrorDisplayProps) {
           <button
             type="button"
             onClick={() => void navigator.clipboard.writeText(error.message)}
-            className="inline-flex items-center gap-1 rounded bg-white/5 px-2 py-1 text-xs text-zinc-300 hover:bg-white/10 light:bg-white light:text-zinc-700"
+            className="inline-flex items-center gap-1 rounded bg-white/5 px-2 py-1 text-xs text-zinc-300 hover:bg-white/10 light:bg-white light:text-zinc-700 max-[420px]:w-full"
           >
             <Copy className="h-3 w-3" /> Copy error
           </button>
@@ -78,7 +78,7 @@ export function ErrorDisplay({ error }: ErrorDisplayProps) {
             type="button"
             aria-expanded={showDetails}
             onClick={() => setShowDetails((value) => !value)}
-            className="inline-flex items-center gap-1 rounded px-2 py-1 text-xs text-zinc-400 hover:text-zinc-200 light:text-zinc-600"
+            className="inline-flex items-center gap-1 rounded px-2 py-1 text-xs text-zinc-400 hover:text-zinc-200 light:text-zinc-600 max-[420px]:w-full"
           >
             <ChevronDown className={`h-3 w-3 transition-transform ${showDetails ? 'rotate-180' : ''}`} />
             Technical details
