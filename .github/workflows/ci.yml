@@ -7,9 +7,41 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      frontend: ${{ steps.filter.outputs.frontend }}
+      rust: ${{ steps.filter.outputs.rust }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            frontend:
+              - '.github/workflows/ci.yml'
+              - '.eslintignore'
+              - '.eslintrc.cjs'
+              - 'index.html'
+              - 'package.json'
+              - 'package-lock.json'
+              - 'public/**'
+              - 'src/**'
+              - 'converter.test.ts'
+              - 'plantuml.test.ts'
+              - 'tsconfig.json'
+              - 'tsconfig.node.json'
+              - 'vite.config.ts'
+            rust:
+              - '.github/workflows/ci.yml'
+              - 'src-tauri/**'
+
   frontend:
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,7 +49,7 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
+      - run: npm ci --no-audit --fund=false
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test -- --run
@@ -29,6 +61,8 @@ jobs:
           node -e "const fs=require('fs');const sw=fs.readFileSync('dist/sw.js','utf8');if(sw.length>500000)throw new Error('Service worker/precache manifest is unexpectedly large')"
 
   rust:
+    needs: changes
+    if: needs.changes.outputs.rust == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -36,3 +70,14 @@ jobs:
       - name: Install Tauri Linux dependencies
         run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
       - run: cargo check --manifest-path src-tauri/Cargo.toml
+
+  summary:
+    needs: [changes, frontend, rust]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check quality results
+        run: |
+          if [[ "${{ needs.frontend.result }}" == "failure" || "${{ needs.rust.result }}" == "failure" ]]; then
+            exit 1
+          fi
