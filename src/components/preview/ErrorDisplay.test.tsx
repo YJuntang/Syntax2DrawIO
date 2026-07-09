@@ -39,6 +39,7 @@ test('allows PlantUML renderer directly from the warning', () => {
     .find((item) => item.textContent?.includes('Allow renderer')) as HTMLButtonElement | undefined;
 
   expect(button).toBeTruthy();
+  expect(container.textContent).toContain('Preview paused');
 
   act(() => {
     button?.click();

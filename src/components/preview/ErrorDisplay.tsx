@@ -13,6 +13,7 @@ export function ErrorDisplay({ error }: ErrorDisplayProps) {
   const parsed = useMemo(() => summarizeError(error), [error]);
   const isSyntax = parsed.isSyntax;
   const action = error.action;
+  const title = getErrorTitle(isSyntax, Boolean(action));
 
   const handleAction = () => {
     if (action?.type === 'grant-plantuml-consent') {
@@ -32,7 +33,7 @@ export function ErrorDisplay({ error }: ErrorDisplayProps) {
       
       <div className="flex-1 space-y-1">
         <h4 className={`text-sm font-medium ${isSyntax ? 'text-red-400 light:text-red-800' : 'text-amber-400 light:text-amber-800'}`}>
-          {isSyntax ? 'Syntax Error' : 'Parsing Issue'}
+          {title}
           {parsed.line && ` at line ${parsed.line}${parsed.column ? `:${parsed.column}` : ''}`}
         </h4>
         
@@ -91,6 +92,14 @@ export function ErrorDisplay({ error }: ErrorDisplayProps) {
       </div>
     </div>
   );
+}
+
+function getErrorTitle(isSyntax: boolean, hasAction: boolean) {
+  if (isSyntax) {
+    return 'Syntax error';
+  }
+
+  return hasAction ? 'Preview paused' : "Couldn't preview diagram";
 }
 
 function summarizeError(error: ParseError) {
