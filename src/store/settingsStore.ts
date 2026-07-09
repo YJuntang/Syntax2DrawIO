@@ -40,7 +40,7 @@ export const DEFAULT_SETTINGS_PNG_EXPORT = DEFAULT_PNG_EXPORT_SETTINGS;
 export const useSettingsStore = create<SettingsState>()(
   persist(
     (set) => ({
-      theme: 'dark',
+      theme: 'light',
       splitRatio: 50,
       showSyntaxHelp: false,
       showLanding: true,

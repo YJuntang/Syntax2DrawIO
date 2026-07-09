@@ -18,6 +18,10 @@ test('settings default Mermaid class exports to editable mode', () => {
   expect(useSettingsStore.getInitialState().mermaidClassExportMode).toBe('editable');
 });
 
+test('settings default to light theme', () => {
+  expect(useSettingsStore.getInitialState().theme).toBe('light');
+});
+
 test('settings can switch Mermaid class exports to visual mode', () => {
   useSettingsStore.getState().setMermaidClassExportMode('visual');
 
