@@ -228,7 +228,15 @@ export function useConverter() {
           if (!plantUmlConsentOrigins.includes(rendererOrigin)) {
             throw Object.assign(
               new Error(`PlantUML preview is paused until you allow source transmission to ${rendererOrigin}.`),
-              { suggestion: 'Open Settings and allow this PlantUML renderer.' }
+              {
+                suggestion: 'Allow this renderer to preview PlantUML diagrams. Your diagram source will be sent to this origin.',
+                action: {
+                  type: 'grant-plantuml-consent',
+                  rendererUrl: plantUmlServerUrl,
+                  rendererOrigin,
+                  label: 'Allow renderer',
+                },
+              }
             );
           }
           const lines = preprocessPlantUML(safeSource);
@@ -304,6 +312,7 @@ export function useConverter() {
             setParseError({
               message: error.message || 'Unknown error during conversion',
               suggestion: error.suggestion,
+              action: error.action,
             });
             setIsConverting(false);
           });
@@ -319,6 +328,7 @@ export function useConverter() {
           message: error.message || 'Unknown error during conversion',
           line: getErrorLine(error),
           suggestion: error.suggestion,
+          action: error.action,
         });
         setIsConverting(false);
       }

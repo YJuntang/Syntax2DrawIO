@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
-import { AlertCircle, AlertTriangle, ChevronDown, Copy } from 'lucide-react';
+import { AlertCircle, AlertTriangle, Check, ChevronDown, Copy } from 'lucide-react';
 import { ParseError } from '../../store/editorStore';
+import { useSettingsStore } from '../../store/settingsStore';
 
 interface ErrorDisplayProps {
   error: ParseError;
@@ -8,8 +9,16 @@ interface ErrorDisplayProps {
 
 export function ErrorDisplay({ error }: ErrorDisplayProps) {
   const [showDetails, setShowDetails] = useState(false);
+  const grantPlantUmlConsent = useSettingsStore((state) => state.grantPlantUmlConsent);
   const parsed = useMemo(() => summarizeError(error), [error]);
   const isSyntax = parsed.isSyntax;
+  const action = error.action;
+
+  const handleAction = () => {
+    if (action?.type === 'grant-plantuml-consent') {
+      grantPlantUmlConsent(action.rendererUrl);
+    }
+  };
 
   return (
     <div role="alert" aria-live="assertive" className="absolute inset-x-4 bottom-4 z-20 flex max-w-xl items-start gap-3 rounded-xl border border-red-500/20 bg-zinc-950/95 p-4 shadow-lg backdrop-blur-md animate-slide-up light:bg-red-50 light:border-red-200">
@@ -39,6 +48,15 @@ export function ErrorDisplay({ error }: ErrorDisplayProps) {
         )}
 
         <div className="mt-3 flex flex-wrap gap-2">
+          {action ? (
+            <button
+              type="button"
+              onClick={handleAction}
+              className="inline-flex items-center gap-1 rounded bg-amber-500 px-2 py-1 text-xs font-semibold text-zinc-950 shadow-sm hover:bg-amber-400 light:bg-amber-500 light:text-white light:hover:bg-amber-600"
+            >
+              <Check className="h-3 w-3" /> {action.label}
+            </button>
+          ) : null}
           {parsed.line ? (
             <button
               type="button"

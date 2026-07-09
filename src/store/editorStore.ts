@@ -20,6 +20,12 @@ export interface ParseError {
   message: string;
   line?: number;
   suggestion?: string;
+  action?: {
+    type: 'grant-plantuml-consent';
+    rendererUrl: string;
+    rendererOrigin: string;
+    label: string;
+  };
 }
 
 export type XmlStatus = 'pending' | 'ready' | 'error';
