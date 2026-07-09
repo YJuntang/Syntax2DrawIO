@@ -2,9 +2,39 @@
 
 [Use the web app](https://syntax2drawio.pages.dev)
 
-Syntax2DrawIO converts Mermaid and PlantUML source into Draw.io files in the web app or Tauri desktop shell. Supported constructs become native editable shapes; partially supported diagrams retain editable content plus a hidden locked visual reference so missing fidelity is never silent.
+Syntax2DrawIO turns Mermaid and PlantUML source into Draw.io diagrams. Supported constructs become native editable Draw.io shapes, while partially supported diagrams retain editable content plus a hidden locked visual reference so missing fidelity is never silent.
 
-Native PlantUML families include sequence, class, component, and use case diagrams. The bundled example catalog intentionally exercises complex editable diagrams rather than minimal syntax samples.
+## Features
+
+- Convert Mermaid and PlantUML source into `.drawio` files.
+- Copy generated Draw.io diagrams directly to the clipboard.
+- Export PNGs with embedded Draw.io source.
+- Keep supported diagram content editable as native Draw.io cells.
+- Preserve partial diagrams with hybrid exports that include a hidden locked visual reference.
+- Use the web app in a browser or the Tauri desktop shell locally.
+
+## How to use
+
+1. Open the [web app](https://syntax2drawio.pages.dev).
+2. Paste or import Mermaid or PlantUML source.
+3. Review the preview and diagnostics.
+4. Export a `.drawio` file, copy the diagram, or export a PNG.
+
+## Diagram support
+
+High-editability support includes Mermaid flowchart, sequence, class, and ER diagrams, plus PlantUML sequence, class, component, and use case diagrams.
+
+Other Mermaid and PlantUML families may export as visual-only diagrams or hybrid diagrams. The in-app diagnostics panel is authoritative for the current diagram. A broader matrix is in [SUPPORT.md](SUPPORT.md).
+
+## Export fidelity
+
+- **Editable:** all detected content was converted to native Draw.io cells.
+- **Hybrid:** recognized content is editable and the original rendering is retained on a hidden locked reference layer.
+- **Visual only:** no safe native representation was available.
+
+## Privacy
+
+Mermaid renders locally. PlantUML preview and visual fallback layers require an HTTPS renderer and transmit the diagram source to that renderer only after first-use consent for its exact origin. Consent can be revoked in Settings. See [PRIVACY.md](PRIVACY.md).
 
 ## Development
 
@@ -21,18 +51,6 @@ cargo check --manifest-path src-tauri/Cargo.toml
 ```
 
 Copy `.env.example` to `.env.local` if the public repository URL differs from the default.
-
-## PlantUML privacy
-
-Mermaid renders locally. PlantUML preview and visual fallback layers require an HTTPS renderer and transmit the diagram source to that renderer only after first-use consent for its exact origin. Consent can be revoked in Settings. See [PRIVACY.md](PRIVACY.md).
-
-## Export fidelity
-
-- **Editable:** all detected content was converted to native Draw.io cells.
-- **Hybrid:** recognized content is editable and the original rendering is retained on a hidden locked reference layer.
-- **Visual only:** no safe native representation was available.
-
-The in-app diagnostics panel lists limitations for the current diagram. A broader matrix is in [SUPPORT.md](SUPPORT.md).
 
 ## Releases
 
