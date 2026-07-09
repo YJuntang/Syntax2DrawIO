@@ -2,14 +2,14 @@
 
 [Use the web app](https://syntax2drawio.pages.dev)
 
-Syntax2DrawIO turns Mermaid and PlantUML source into Draw.io diagrams. Supported constructs become native editable Draw.io shapes, while partially supported diagrams retain editable content plus a hidden locked visual reference so missing fidelity is never silent.
+Syntax2DrawIO turns Mermaid and PlantUML source into draw.io diagrams. Supported constructs become native editable draw.io shapes, while partially supported diagrams retain editable content plus a hidden locked visual reference so missing fidelity is never silent.
 
 ## Features
 
 - Convert Mermaid and PlantUML source into `.drawio` files.
-- Copy generated Draw.io diagrams directly to the clipboard.
-- Export PNGs with embedded Draw.io source.
-- Keep supported diagram content editable as native Draw.io cells.
+- Copy generated draw.io diagrams directly to the clipboard.
+- Export PNGs with embedded draw.io source.
+- Keep supported diagram content editable as native draw.io cells.
 - Preserve partial diagrams with hybrid exports that include a hidden locked visual reference.
 - Use the web app in a browser or the Tauri desktop shell locally.
 
@@ -28,7 +28,7 @@ Other Mermaid and PlantUML families may export as visual-only diagrams or hybrid
 
 ## Export fidelity
 
-- **Editable:** all detected content was converted to native Draw.io cells.
+- **Editable:** all detected content was converted to native draw.io cells.
 - **Hybrid:** recognized content is editable and the original rendering is retained on a hidden locked reference layer.
 - **Visual only:** no safe native representation was available.
 
